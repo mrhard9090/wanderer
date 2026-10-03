@@ -216,6 +216,7 @@
   "error-saving-trail": "Error saving trail",
   "error-setting-up-plugin": "Error setting up {provider} plugin",
   "error-starting-oauth": "Error starting OAuth connection",
+  "error-updating-avatar": "Error updating avatar",
   "error-updating-hammerhead-plugin": "Error updating Hammerhead plugin",
   "error-updating-komoot-plugin": "Error updating komoot plugin",
   "error-updating-password": "Error updating password",

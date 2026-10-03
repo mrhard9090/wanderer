@@ -36,15 +36,26 @@
         if (!$currentUser) {
             return;
         }
-        const files = (
-            document.getElementById("avatarInput") as HTMLInputElement
-        ).files;
+        const input = document.getElementById("avatarInput") as HTMLInputElement;
+        const files = input.files;
 
         if (!files || files.length == 0) {
             return;
         }
 
-        await users_update($currentUser!, files[0]);
+        try {
+            await users_update($currentUser!, files[0]);
+        } catch (e) {
+            show_toast({
+                type: "error",
+                icon: "close",
+                text: $_("error-updating-avatar"),
+            });
+            console.error(e);
+        } finally {
+            // Allow picking the same file again after a failed upload.
+            input.value = "";
+        }
     }
 
     async function handleBioSave() {
