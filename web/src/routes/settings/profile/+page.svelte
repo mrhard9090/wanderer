@@ -10,6 +10,7 @@
         displayCategoryName,
     } from "$lib/util/category_util";
     import { getFileURL } from "$lib/util/file_util";
+    import { avatarUploadErrorMessage } from "$lib/util/avatar_upload_error";
     import { untrack } from "svelte";
     import { _, locale } from "svelte-i18n";
 
@@ -46,11 +47,12 @@
         try {
             await users_update($currentUser!, files[0]);
         } catch (e) {
+            const message = avatarUploadErrorMessage(e);
             show_toast({
                 type: "error",
                 icon: "close",
-                text: $_("error-updating-avatar"),
-            });
+                text: $_(message.key, { values: message.values }),
+            }, 7000);
             console.error(e);
         } finally {
             // Allow picking the same file again after a failed upload.
@@ -92,7 +94,7 @@
                     class="object-cover h-full"
                     src={getFileURL($currentUser, $currentUser.avatar, "300x300") ||
                         `https://api.dicebear.com/7.x/initials/svg?seed=${$currentUser.username?.toLowerCase()}&backgroundType=gradientLinear`}
-                    alt="avatar"
+                    alt={$_("avatar")}
                 />
                 <button
                     aria-label="Open file browser"
@@ -105,7 +107,7 @@
                     type="file"
                     name="avatar"
                     id="avatarInput"
-                    accept="image/*"
+                    accept="image/jpeg,image/png,image/gif,image/webp,image/svg+xml"
                     style="display: none;"
                     onchange={handleAvatarSelection}
                 />
